@@ -24,8 +24,9 @@ jobs:
             cp ./Dockerrun.aws.json ./build
 
 workflows:
-  elastic-beanstalk-workflow:
+  production:
     jobs:
+      - build
       - eb/deploy:
           environment-name: etanol-prod
           label: version-<<pipeline.number>>
