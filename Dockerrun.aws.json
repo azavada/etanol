@@ -1,0 +1,17 @@
+{
+  "AWSEBDockerrunVersion": "1",
+  "Image": {
+    "Name": "azavada/etanol",
+    "Update": "true"
+  },
+  "Ports": [
+    {
+      "ContainerPort": 80,
+      "HostPort": 80
+    }
+  ],
+  "Authentication": {
+    "bucket": "etanol-secrets",
+    "key": "index.docker.io/config.json"
+  }
+}
