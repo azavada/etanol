@@ -5,6 +5,7 @@ orbs:
 jobs:
   build:
     machine: true
+    resource_class: medium
     steps:
       - checkout
       - run:
@@ -31,6 +32,7 @@ workflows:
           environment-name: etanol-prod
           label: version-<<pipeline.number>>
           app-dir: ./build
+          platform-version: docker
           filters:
             branches:
               only: main
