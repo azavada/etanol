@@ -6,7 +6,6 @@ WORKDIR /srv/app
 ARG RAILS_MASTER_KEY
 ENV ENV=production
 ENV RAILS_ENV=production
-ENV PORT=80
 ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY
 ENV DATABASE_URL=$DATABASE_URL
 COPY . /srv/app
@@ -14,7 +13,7 @@ RUN bundle install --jobs=4
 RUN yarn install
 RUN rails assets:precompile
 
-EXPOSE 80
+EXPOSE 3000
 
 # Start the main process.
 CMD ["rails", "server", "-b", "0.0.0.0"]
