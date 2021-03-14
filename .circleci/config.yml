@@ -25,9 +25,9 @@ jobs:
 #            mkdir build
 #            cp ./Dockerrun.aws.json ./build
 
-        - run:
-            name: Deploying to Elastic Bean Stalk
-            command: |
+      - run:
+          name: Deploying to Elastic Bean Stalk
+          command: |
               eb deploy
 
 #          environment-name: etanol-prod
@@ -37,7 +37,7 @@ jobs:
 workflows:
   production:
     jobs:
-      - build
+      - build:
           filters:
             branches:
               only: main
