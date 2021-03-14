@@ -44,7 +44,8 @@ jobs:
       - run:
           name: Deploying to Elastic Bean Stalk
           command: |
-            eb deploy
+            eb init etanol-prod -r $AWS_DEFAULT_REGION -p docker
+            eb deploy etanol-prod -l version-<<pipeline.number>>
 workflows:
   production:
     jobs:
