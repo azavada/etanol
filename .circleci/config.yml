@@ -31,7 +31,9 @@ jobs:
 
       - persist_to_workspace:
           root: ~/repo
-          paths: Dockerrun.aws.json
+          paths:
+            - Dockerrun.aws.json
+            - commit.msg
 
   deploy:
     docker:
