@@ -29,8 +29,8 @@ jobs:
 #          app-dir: ./build
 #          platform-version: docker
       - persist_to_workspace:
-          root: /tmp/workspace
-          paths: ./Dockerrun.aws.json
+          root: .
+          paths: Dockerrun.aws.json
 
   deploy:
     docker:
