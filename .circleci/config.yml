@@ -25,10 +25,10 @@ jobs:
             mkdir build
             cp ./Dockerrun.aws.json ./build
 
-#          environment-name: etanol-prod
-#          label: version-<<pipeline.number>>
-#          app-dir: ./build
-#          platform-version: docker
+      - run:
+          name: Getting last commit message
+          command: git log --pretty=format:%s -n 1 $CIRCLE_SHA1 >> commit.msg
+
       - persist_to_workspace:
           root: ~/repo
           paths: Dockerrun.aws.json
@@ -44,8 +44,12 @@ jobs:
       - run:
           name: Deploying to Elastic Bean Stalk
           command: |
+            export GIT_COMMIT_DESC="$(cat ~/repo/commit.msg)"
+            rm -f ~/repo/commit.msg
+            sed -i='' "s/<IMAGE_NAME>/$IMAGE_NAME/" Dockerrun.aws.json
+            sed -i='' "s/<TAG>/<<pipeline.number>>/" Dockerrun.aws.json
             eb init etanol -r $AWS_DEFAULT_REGION -p docker
-            eb deploy etanol-prod -l version-<<pipeline.number>>
+            eb deploy etanol-prod --label version-<<pipeline.number>> --message $GIT_COMMIT_DESC
 workflows:
   production:
     jobs:

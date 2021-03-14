@@ -1,7 +1,7 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "azavada/etanol",
+    "Name": "<IMAGE_NAME>:<TAG>",
     "Update": "true"
   },
   "Ports": [
