@@ -5,7 +5,7 @@ branch-defaults:
   main:
     environment: etanol-prod
 deploy:
-  artifact: ../Dockerrun.aws.json
+  artifact: Dockerrun.aws.json
 global:
   application_name: etanol
   branch: null
