@@ -8,15 +8,15 @@ jobs:
     resource_class: medium
     steps:
       - checkout
-      - run:
-          name: Building Docker
-          command: docker build . -t $IMAGE_NAME --no-cache --build-arg RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
-
-      - run:
-          name: Publish Docker Image to Docker Hub
-          command: |
-            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-            docker push $IMAGE_NAME:latest
+#      - run:
+#          name: Building Docker
+#          command: docker build . -t $IMAGE_NAME --no-cache --build-arg RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
+#
+#      - run:
+#          name: Publish Docker Image to Docker Hub
+#          command: |
+#            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+#            docker push $IMAGE_NAME:latest
 
       - run:
           name: Deploying to Elastic Bean Stalk
