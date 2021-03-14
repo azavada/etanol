@@ -9,15 +9,15 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-#      - run:
-#          name: Building Docker
-#          command: docker build . -t $IMAGE_NAME --no-cache --build-arg RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
-#
-#      - run:
-#          name: Publish Docker Image to Docker Hub
-#          command: |
-#            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-#            docker push $IMAGE_NAME:latest
+      - run:
+          name: Building Docker
+          command: docker build . -t $IMAGE_NAME --no-cache --build-arg RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
+
+      - run:
+          name: Publish Docker Image to Docker Hub
+          command: |
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            docker push $IMAGE_NAME:<<pipeline.number>>
 
       - run:
           name: Updating Dockerrun.aws.json
@@ -48,8 +48,8 @@ jobs:
           command: |
             export GIT_COMMIT_DESC="$(cat ~/repo/commit.msg)"
             rm -f ~/repo/commit.msg
-            sed -i='' "s|<IMAGE_NAME>|$IMAGE_NAME|" Dockerrun.aws.json
-            sed -i='' "s|<TAG>|<<pipeline.number>>|" Dockerrun.aws.json
+            sed -i '' "s|<IMAGE_NAME>|$IMAGE_NAME|" Dockerrun.aws.json
+            sed -i '' "s|<TAG>|<<pipeline.number>>|" Dockerrun.aws.json
             eb init etanol -r $AWS_DEFAULT_REGION -p docker
             eb deploy etanol-prod --label version-<<pipeline.number>> --message "$GIT_COMMIT_DESC"
 workflows:
