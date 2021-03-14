@@ -4,8 +4,10 @@ orbs:
 
 jobs:
   build:
-    machine: true
-    resource_class: medium
+#    machine: true
+#    resource_class: medium
+    docker:
+      - image: 'cimg/base:stable'
     steps:
       - checkout
       - eb/setup
