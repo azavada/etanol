@@ -8,7 +8,6 @@ jobs:
     resource_class: medium
     steps:
       - checkout
-      - eb/setup
 #      - run:
 #          name: Building Docker
 #          command: docker build . -t $IMAGE_NAME --no-cache --build-arg RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
@@ -19,22 +18,27 @@ jobs:
 #            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
 #            docker push $IMAGE_NAME:latest
 
-#      - run:
-#          name: Deploying to Elastic Bean Stalk
-#          command: |
-#            mkdir build
-#            cp ./Dockerrun.aws.json ./build
+      - run:
+          name: Updating Dockerrun.aws.json
+          command: |
+            mkdir build
+            cp ./Dockerrun.aws.json ./build
 
 #          environment-name: etanol-prod
 #          label: version-<<pipeline.number>>
 #          app-dir: ./build
 #          platform-version: docker
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths: ./Dockerrun.aws.json
 
   deploy:
     docker:
       - image: 'cimg/base:stable'
     steps:
       - eb/setup
+      - attach_workspace:
+          at: /tmp/workspace
       - run:
           name: Deploying to Elastic Bean Stalk
           command: |
