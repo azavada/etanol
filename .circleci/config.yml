@@ -11,14 +11,13 @@ jobs:
       - checkout
       - run:
           name: Building Docker
-          command: docker build . -t $IMAGE_NAME:<<pipeline.number>> --no-cache --build-arg RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
+          command: docker build . -t $IMAGE_NAME:<<pipeline.number>> -t $IMAGE_NAME:latest --no-cache --build-arg RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
 
       - run:
           name: Publish Docker Image to Docker Hub
           command: |
             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-            docker push $IMAGE_NAME:<<pipeline.number>>
-            docker tag $IMAGE_NAME:<<pipeline.number>> $IMAGE_NAME:latest
+            docker push --all-tags
 
       - run:
           name: Updating Dockerrun.aws.json
