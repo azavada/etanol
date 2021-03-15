@@ -18,6 +18,7 @@ jobs:
           command: |
             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
             docker push $IMAGE_NAME:<<pipeline.number>>
+            docker tag $IMAGE_NAME:<<pipeline.number>> $IMAGE_NAME:latest
 
       - run:
           name: Updating Dockerrun.aws.json
@@ -40,9 +41,9 @@ jobs:
       - image: 'cimg/base:stable'
     working_directory: ~/repo
     steps:
-      - eb/setup
       - attach_workspace:
-          at: ~/repo
+        at: ~/repo
+      - eb/setup
       - run:
           name: Deploying to Elastic Bean Stalk
           command: |
